@@ -81,6 +81,14 @@ object getAllRegistrationData extends App{
 
   println("master data ===>" + dashboard)
 }
+object getAllAMRData extends App{
+  val dashboard = documentClient.queryDocuments(
+    "dbs/" + databaseId + "/colls/" + collectionId,
+    "SELECT * FROM tyrion where tyrion.doctype=\"attendance\" AND tyrion.schoolcode=\"27511010507\"",
+    null).getQueryIterable().toList()
+
+  println("master data ===>" + dashboard)
+}
 object getImageData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,

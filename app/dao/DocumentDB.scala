@@ -72,6 +72,7 @@ object DocumentDB {
       case xs => xs
     }
     println("Present Data is ===>" + present)
+    println("currentDate ===>" + currentDate)
 
     implicit def convert(o: Object): String = o.toString()
 
