@@ -6,6 +6,6 @@ const Header = ({title, date}) =>
         <div className="sidebar-toggle-box">
             <i className="fa fa-bars"></i>
         </div>
-        <a href="/" className="logo">{title}<span>{date}</span></a>
+        <a href="/" className="logo">{title}<span style={{paddingLeft: "50px"}}>{date}</span></a>
     </header>
 export default Header;

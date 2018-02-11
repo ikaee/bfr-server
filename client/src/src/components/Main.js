@@ -11,13 +11,14 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Admin from "./Admin";
 import HotCooked from "./HotCooked";
+import moment from 'moment';
 
 export default () =>
     <Router>
         <section id="container">
             <DocumentTitle title="BFR"/>
             <Favicon url={faviconImage}/>
-            <Header title={"ICDS"} date={"January 2018"} />
+            <Header title={"ICDS"} date={`${moment().format("MMMM")} ${moment().format("YYYY")}`} />
             <NavMenu/>
             <section id={"main-content"}>
                 <Route exact path="/" component={Dashboard}/>
