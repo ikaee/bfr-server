@@ -1,7 +1,7 @@
 import {Option} from "../utils/Option";
 
 const extractValue = (data, key) => Option(data).fold(_ => 0, _ => data[key])
-export const Metrics = {
+export const MetricsSchema = {
     "gmr": data => [
         {
             "type":"fa-user",

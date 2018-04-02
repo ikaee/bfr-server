@@ -1,9 +1,9 @@
 import React from 'react';
-import {Metrics} from "../schema/Metrics";
+import {MetricsSchema} from "../schema/MetricsSchema";
 
 const MetricsDashboard = ({metricsType, metricsData}) => {
     const type = metricsType === "gmr" ? "gmr" : "normal"
-    const metrics = Metrics[type](metricsData)
+    const metrics = MetricsSchema[type](metricsData)
     return <div>
         <div className="row state-overview">
             {metrics.map(m =>

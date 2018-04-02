@@ -6,6 +6,8 @@ import ReactTable from 'react-table'
 import "react-table/react-table.css";
 import Loader from "react-loader";
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from "axios/index";
+import {Option} from "../utils/Option";
 
 export const reportTableColumns = [
     {
@@ -46,11 +48,41 @@ class GMR extends Component {
     constructor() {
         super();
         this.state = {
-            selectedOption: {label: "PIMPALGAO 2", value: "27511010507"},
-            options: [{label: "PIMPALGAO 2", value: "27511010507"}],
+            selectedOption: '',
+            options: [],
             reportData: [],
-            loaded: true
+            loaded: false
         }
+    }
+
+    componentDidMount = () => {
+        axios.get('/amr/dropdown').then(({data}) => {
+            this.setState({
+                options: data,
+                loaded: true
+            })
+        }).catch(err => {
+            this.setState({loaded: true})
+        })
+    }
+
+    onHandleChange = selectedOption => {
+        this.setState({loaded: false});
+        Option(selectedOption).fold(
+            _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
+            _ => {
+                axios.get(`http://localhost:8081/epgm/gmreport/${selectedOption.value}`).then(res => {
+                    this.setState({
+                        selectedOption,
+                        reportData: res.data.data,
+                        loaded: true
+                    })
+                }).catch(err => {
+                    this.setState({loaded: true})
+                })
+
+            })
+
     }
 
     render() {

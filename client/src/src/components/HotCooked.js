@@ -8,36 +8,7 @@ import "react-table/react-table.css";
 import {Option} from "../utils/Option";
 import Loader from "react-loader";
 import 'react-datepicker/dist/react-datepicker.css';
-
-export const reportTableColumns = [
-    {
-        Header: 'Code',
-        accessor: 'studentcode'
-    }, {
-        Header: 'Name',
-        accessor: 'name'
-    }, {
-        Header: 'Surname',
-        accessor: 'surname'
-    }, {
-        Header: 'Gender',
-        accessor: 'gender'
-    }, {
-        Header: 'Dob',
-        accessor: 'dob'
-    }, {
-        Header: 'Timestamp',
-        accessor: 'timestamp'
-    },{
-        Header: 'Latitude',
-        accessor: 'latitude'
-    },{
-        Header: 'Longitude',
-        accessor: 'longitude'
-    }, {
-        Header: 'Image',
-        accessor: 'image'
-    }]
+import {ReportTableSchema} from "../schema/ReportTableSchema";
 
 class HotCooked extends Component {
 
@@ -112,7 +83,7 @@ class HotCooked extends Component {
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
                         data={this.state.reportData}
-                        columns={reportTableColumns}
+                        columns={ReportTableSchema}
                         filterable
                         defaultPageSize={5}
                         className="-striped -highlight"

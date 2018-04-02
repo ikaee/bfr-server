@@ -3,7 +3,7 @@ import MetricsComponent from '../../src/components/MetricsComponent';
 import {shallow} from "enzyme";
 import FaGroup from 'react-icons/lib/fa/group';
 
-describe("Metrics component",()=>{
+describe("MetricsSchema component",()=>{
 
     const label = "dummy label";
     const consolidatedCount="12";

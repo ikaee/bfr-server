@@ -7,36 +7,8 @@ import ReactTable from 'react-table'
 import "react-table/react-table.css";
 import {Option} from "../utils/Option"
 import Loader from "react-loader"
+import {ReportTableSchema} from "../schema/ReportTableSchema";
 
-export const reportTableColumns = [
-    {
-        Header: 'Code',
-        accessor: 'studentcode'
-    }, {
-        Header: 'Name',
-        accessor: 'name'
-    }, {
-        Header: 'Surname',
-        accessor: 'surname'
-    }, {
-        Header: 'Gender',
-        accessor: 'gender'
-    }, {
-        Header: 'Dob',
-        accessor: 'dob'
-    }, {
-        Header: 'Timestamp',
-        accessor: 'timestamp'
-    },{
-        Header: 'Latitude',
-        accessor: 'latitude'
-    },{
-        Header: 'Longitude',
-        accessor: 'longitude'
-    }, {
-        Header: 'Image',
-        accessor: 'image'
-    }]
 
 export default class THR extends Component {
 
@@ -107,7 +79,7 @@ export default class THR extends Component {
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
                         data={this.state.reportData}
-                        columns={reportTableColumns}
+                        columns={ReportTableSchema}
                         filterable
                         defaultPageSize={5}
                         className="-striped -highlight"
