@@ -12,19 +12,22 @@ import Footer from "./Footer";
 import Admin from "./Admin";
 import HotCooked from "./HotCooked";
 import moment from 'moment';
+import GMR from "./GMR";
+import {PROJECT_NAME} from "../utils/Configuration";
 
 export default () =>
     <Router>
         <section id="container">
-            <DocumentTitle title="BFR"/>
+            <DocumentTitle title={PROJECT_NAME}/>
             <Favicon url={faviconImage}/>
-            <Header title={"ICDS"} date={`${moment().format("MMMM")} ${moment().format("YYYY")}`} />
+            <Header title={PROJECT_NAME} date={`${moment().format("MMMM")} ${moment().format("YYYY")}`} />
             <NavMenu/>
             <section id={"main-content"}>
                 <Route exact path="/" component={Dashboard}/>
                 <Route path="/amr" component={AMR}/>
                 <Route path="/thr" component={THR}/>
                 <Route path="/hot-cooked" component={HotCooked}/>
+                <Route path="/gmr" component={GMR}/>
                 <Route path="/admin" component={Admin}/>
             </section>
             {/*<Footer />*/}

@@ -1,48 +1,25 @@
 import React from 'react';
+import {Metrics} from "../schema/Metrics";
 
-const MetricsDashboard = ({total = 0, present = 0, percentage = 0}) => (
-    <div>
+const MetricsDashboard = ({metricsType, metricsData}) => {
+    const type = metricsType === "gmr" ? "gmr" : "normal"
+    const metrics = Metrics[type](metricsData)
+    return <div>
         <div className="row state-overview">
-            <div className="col-lg-4 col-sm-6" >
-                <section className="panel">
-                    <div className="symbol terques">
-                        <i className="fa  fa-hand-pointer-o"></i>
-                    </div>
-                    <div className="value">
-                        <h1 className="count">
-                            {present}
-                        </h1>
-                        <p>Present</p>
-                    </div>
-                </section>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-                <section className="panel">
-                    <div className="symbol red">
-                        <i className="fa fa-users"></i>
-                    </div>
-                    <div className="value">
-                        <h1 className=" count2">
-                            {total}
-                        </h1>
-                        <p>Total</p>
-                    </div>
-                </section>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-                <section className="panel">
-                    <div className="symbol yellow">
-                        <i className="fa fa-percent"></i>
-                    </div>
-                    <div className="value">
-                        <h1 className=" count3">
-                            {percentage}
-                        </h1>
-                        <p>Percentage</p>
-                    </div>
-                </section>
-            </div>
+            {metrics.map(m =>
+                <div className={`col-lg-${12/metrics.length} col-sm-6`}>
+                    <section className="panel">
+                        <div className={`symbol ${m.color}`}>
+                            <i className={`fa ${m.type}`}></i>
+                        </div>
+                        <div class="value">
+                            <h1>{m[m.name]}</h1>
+                            <p><label>{m.name}</label></p>
+                        </div>
+                    </section>
+                </div>
+            )}
         </div>
-    </div>);
+    </div>};
 
 export default MetricsDashboard;

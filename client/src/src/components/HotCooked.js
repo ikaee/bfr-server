@@ -27,7 +27,13 @@ export const reportTableColumns = [
         accessor: 'dob'
     }, {
         Header: 'Timestamp',
-        accessor: 'datestamp'
+        accessor: 'timestamp'
+    },{
+        Header: 'Latitude',
+        accessor: 'latitude'
+    },{
+        Header: 'Longitude',
+        accessor: 'longitude'
     }, {
         Header: 'Image',
         accessor: 'image'

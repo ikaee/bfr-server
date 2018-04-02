@@ -16,7 +16,7 @@ class Dashboard extends Component {
             data: {},
             loaded: true,
             selectedOption: {value: 'attendance', label: 'Attendance'},
-            options: [{value: 'attendance', label: 'Attendance'}, {value: "thr", label: "Take Home Ration"}, {value: 'hot-cooked', label: 'HotMeals'}]
+            options: [{value: 'attendance', label: 'Attendance'}, {value: "thr", label: "Take Home Ration"}, {value: 'hot-cooked', label: 'HotMeals'}, {value: "gmr", label: "Growth Monitoring Report"}]
         }
     }
 
@@ -81,7 +81,7 @@ class Dashboard extends Component {
                         <label > {this.state.selectedOption.label} Dashboard</label>
                     </div>
                     <div>
-                        <MetricsDashboard {...attendance_data}/>
+                        <MetricsDashboard metricsType={this.state.selectedOption.value} metricsData={attendance_data}/>
                         <MonthWise title='Month wise' data={month_data}/>
                         <GenderWise title='Gender Wise' data={gender_data}/>
                         <AgeWise title={"Age wise"} data={age_data}/>

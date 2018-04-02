@@ -18,13 +18,4 @@ class Dashboard extends Controller{
   response(BfrDashboardData(dashboardType=dashboardType))
   }
 
-//  def thrData = Action {
-//  response(BfrDashboardData())
-//  }
-//
-//  def mdmData = Action {
-//  response(BfrDashboardData())
-//  }
-
-
 }
