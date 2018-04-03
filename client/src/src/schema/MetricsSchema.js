@@ -7,7 +7,7 @@ export const MetricsSchema = {
             "type":"fa-user",
             "name":"Weighed",
             "color":"blue",
-            "Weighed": extractValue(data, "weighed")
+            "Weighed": extractValue(data, "total")
         },{
             "type":"fa-user",
             "name":"Severly Malnourished",

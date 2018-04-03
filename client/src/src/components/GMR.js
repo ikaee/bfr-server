@@ -12,7 +12,7 @@ import {Option} from "../utils/Option";
 export const reportTableColumns = [
     {
         Header: 'Code',
-        accessor: 'studentcode'
+        accessor: 'code'
     }, {
         Header: 'Name',
         accessor: 'name'
@@ -30,19 +30,15 @@ export const reportTableColumns = [
         accessor: 'class'
     }, {
         Header: 'Log Date',
-        accessor: 'log_date'
+        accessor: 'logDates'
     }, {
         Header: 'Weight',
-        accessor: 'weight'
+        accessor: 'weights'
     }, {
         Header: 'WHO',
-        accessor: 'who'
+        accessor: 'whoGrades'
     }]
-const tempData = [
-    {studentcode: "007",name: "surya",surname: "sate",gender: "M",dob: "24-01-2016",class: "OBC",log_date: "07-02-2018",weight: "6.25",who: "SUW"},
-    {studentcode: "008",name: "priya",surname: "patel",gender: "F",dob: "02-03-2015",class: "OBC",log_date: "07-02-2018",weight: "11.64",who: "MUW"},
-    {studentcode: "009",name: "shivaji",surname: "shinde",gender: "M",dob: "04-01-2017",class: "OBC",log_date: "07-02-2018",weight: "7.33",who: "MUW"}
-    ]
+
 class GMR extends Component {
 
     constructor() {
@@ -105,7 +101,7 @@ class GMR extends Component {
                         />
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
-                        data={tempData}
+                        data={this.state.reportData}
                         columns={reportTableColumns}
                         filterable
                         defaultPageSize={5}

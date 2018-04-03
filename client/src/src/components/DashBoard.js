@@ -33,14 +33,25 @@ class Dashboard extends Component {
             })
     }
 
-    onHandleChange = selectedOption => {
+    gmrDashboardData = selectedOption => {
+        Option(selectedOption).fold(
+            _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
+            _ => {
+                axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/dashboard/27`).then(res => {
+                    console.log("called got data",res.data);
+                    this.setState({
+                        selectedOption,
+                        data: {"attendance_data": res.data["grade_data"], ...res.data},
+                        loaded: true
+                    })
+                }).catch(err => {
+                    this.setState({loaded: true})
+                })
 
-        this.setState({
-            selectedOption,
-            loaded: true,
-            selectedDashboard:selectedOption.label
-        });
+            })
+    }
 
+    regularDashboardData = selectedOption => {
         Option(selectedOption).fold(
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
@@ -56,6 +67,17 @@ class Dashboard extends Component {
                 })
 
             })
+    }
+
+    onHandleChange = selectedOption => {
+
+        this.setState({
+            selectedOption,
+            loaded: true,
+            selectedDashboard:selectedOption.label
+        });
+
+        selectedOption.value === "gmr" ? this.gmrDashboardData(selectedOption) : this.regularDashboardData(selectedOption)
 
     }
 
@@ -64,7 +86,6 @@ class Dashboard extends Component {
         let selectedOption = this.state.selectedOption;
         const value = selectedOption && selectedOption.value;
         const {age_data, attendance_data, gender_data, month_data} = this.state.data;
-
         return (
 
             <section className="wrapper">

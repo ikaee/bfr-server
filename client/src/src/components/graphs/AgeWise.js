@@ -24,10 +24,10 @@ export const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadiu
 const AgeWise = ({
                      title = "Age wise",
                      data = [
-                         {name: '0m-6m', value: 0},
-                         {name: '6m-2Y', value: 0},
-                         {name: '2Y-3.5Y', value: 0},
-                         {name: '3.5Y-6', value: 0}
+                         {name: '0Y-1Y', value: 0},
+                         {name: '1Y-3Y', value: 0},
+                         {name: '3Y-5Y', value: 0},
+                         {name: '5Y-6Y', value: 0}
                      ]
                  }) => (
     <div className="col-lg-3 col-sm-6" style={{marginLeft: "2%", backgroundColor: "white", borderRadius: '7px'}}>
