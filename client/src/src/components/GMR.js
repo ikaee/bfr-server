@@ -67,7 +67,7 @@ class GMR extends Component {
         Option(selectedOption).fold(
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
-                axios.get(`http://localhost:8081/epgm/gmreport/${selectedOption.value}`).then(res => {
+                axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/gmreport/${selectedOption.value}`).then(res => {
                     this.setState({
                         selectedOption,
                         reportData: res.data.data,
@@ -96,8 +96,22 @@ class GMR extends Component {
                     />
                         <Select
                             style={{width: "15%"}}
-                            value={'02'}
-                            options={[{value: '02', label: 'February'}]}
+                            value={'04'}
+                            options={[
+                                {value: '01', label: 'January'},
+                                {value: '02', label: 'February'},
+                                {value: '03', label: 'March'},
+                                {value: '04', label: 'April'},
+                                {value: '05', label: 'May'},
+                                {value: '06', label: 'June'},
+                                {value: '07', label: 'July'},
+                                {value: '08', label: 'August'},
+                                {value: '09', label: 'September'},
+                                {value: '10', label: 'October'},
+                                {value: '11', label: 'November'},
+                                {value: '12', label: 'December'},
+
+                                ]}
                         />
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}

@@ -46,10 +46,10 @@ case class AgeData(name: String, value: Int)
 
 object AgeData {
   def apply(ad: Map[String, String]): List[AgeData] = {
-    AgeData("6Y-8Y", ad.get("6-8").getOrElse("0").toInt) ::
-      AgeData("9Y-11Y", ad.get("9-11").getOrElse("0").toInt) ::
-      AgeData("12Y-13Y", ad.get("12-13").getOrElse("0").toInt) ::
-      AgeData("14Y+", ad.get("14+").getOrElse("0").toInt) :: Nil
+    AgeData("0Y-1Y", ad.get("0-1").getOrElse("0").toInt) ::
+      AgeData("1Y-3Y", ad.get("1-3").getOrElse("0").toInt) ::
+      AgeData("3Y-5Y", ad.get("3-5").getOrElse("0").toInt) ::
+      AgeData("5Y+", ad.get("5+").getOrElse("0").toInt) :: Nil
   }
 
   def apply(ads: List[AgeData]) = ads.map(ad => Json.obj("name" -> ad.name, "value" -> ad.value))

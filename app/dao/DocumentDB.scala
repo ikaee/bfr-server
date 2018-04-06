@@ -188,12 +188,12 @@ object DocumentDB {
       val start = LocalDate.of(dobParams(2).toInt, dobParams(1).toInt, dobParams(0).toInt)
       val end = LocalDate.now()
       val year = Math.abs(ChronoUnit.YEARS.between(start, end))
-
+      println("year == ", year)
       year match {
-        case y if (y > 5 && y < 9) => "6-8"
-        case y if (y > 8 && y < 12) => "9-11"
-        case y if (y > 12 && y < 14) => "12-13"
-        case y if (y > 14) => "14+"
+        case y if (y >= 0 && y < 1) => "0-1"
+        case y if (y > 1 && y < 3) => "1-3"
+        case y if (y > 3 && y < 5) => "3-5"
+        case y if (y >= 5) => "5+"
         case _ => ""
 
       }
