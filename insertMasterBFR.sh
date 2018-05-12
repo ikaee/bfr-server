@@ -1,0 +1,12 @@
+#!/bin/bash
+
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+curl -X POST -H "Content-type: application/json" -d '{"gender": "m","schoolcode": "27511010507","doctype": "registration","studentcode": "009","surname": "A KHADE","dob": "24-08-2010","name": "kiran"}' http://bfr.centralindia.cloudapp.azure.com:8080/bfr/v1/registration
+
