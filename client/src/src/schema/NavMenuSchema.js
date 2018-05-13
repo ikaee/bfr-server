@@ -29,6 +29,12 @@ export const NavMenuSchema = [
     },{
         "id": 6,
         "class": "fa fa-table",
+        "name": "MMR",
+        "uri": "/mmr"
+    }
+    ,{
+        "id": 7,
+        "class": "fa fa-table",
         "name": "Admin",
         "uri": "/admin"
     }

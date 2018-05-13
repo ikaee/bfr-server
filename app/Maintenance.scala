@@ -76,7 +76,7 @@ object removeAllImage extends App{
 object getAllRegistrationData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"registration\" ",
+    "SELECT * FROM tyrion where tyrion.doctype=\"registration\" and tyrion.studentcode=\"5000\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)
@@ -92,7 +92,15 @@ object getAllMasterListLogData extends App{
 object getAllAMRData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"attendance\" AND tyrion.schoolcode=\"27511010507\"",
+    "SELECT * FROM tyrion where tyrion.doctype=\"attendance\" AND tyrion.schoolcode=\"27511150602\"",
+    null).getQueryIterable().toList()
+
+  println("master data ===>" + dashboard)
+}
+object getAllMasterLoginData extends App{
+  val dashboard = documentClient.queryDocuments(
+    "dbs/" + databaseId + "/colls/" + collectionId,
+    "SELECT * FROM tyrion where tyrion.doctype=\"master-login\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)

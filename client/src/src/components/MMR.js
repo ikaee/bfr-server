@@ -1,45 +1,16 @@
 import React, {Component} from "react";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import axios from 'axios';
 import {css, StyleSheet} from "aphrodite";
 import ReactTable from 'react-table'
 import "react-table/react-table.css";
-import Loader from "react-loader";
-import 'react-datepicker/dist/react-datepicker.css';
-import axios from "axios/index";
-import {Option} from "../utils/Option";
+import {Option} from "../utils/Option"
+import Loader from "react-loader"
+import {ReportTableSchema} from "../schema/ReportTableSchema";
 
-export const reportTableColumns = [
-    {
-        Header: 'Code',
-        accessor: 'code'
-    }, {
-        Header: 'Name',
-        accessor: 'name'
-    }, {
-        Header: 'Surname',
-        accessor: 'surname'
-    }, {
-        Header: 'Gender',
-        accessor: 'gender'
-    }, {
-        Header: 'Dob',
-        accessor: 'dob'
-    }, {
-        Header: 'Class',
-        accessor: 'class'
-    }, {
-        Header: 'Log Date',
-        accessor: 'logDates'
-    }, {
-        Header: 'Weight',
-        accessor: 'weights'
-    }, {
-        Header: 'WHO',
-        accessor: 'whoGrades'
-    }]
 
-class GMR extends Component {
+export default class MMR extends Component {
 
     constructor() {
         super();
@@ -51,26 +22,37 @@ class GMR extends Component {
         }
     }
 
-    componentDidMount = () => {
-        axios.get('/amr/dropdown').then(({data}) => {
-            this.setState({
-                options: data,
-                loaded: true
-            })
-        }).catch(err => {
-            this.setState({loaded: true})
+
+    addImageLink = record => {
+        return Object.assign({}, record, {
+            image: <a style={{cursor: "pointer"}} onClick={_ => this.addImage(record)}>View Image</a>
+        })
+    };
+
+    isSameCode = (r, record) => r.studentcode === record.studentcode
+
+    addImage = record => {
+        const MIME = "data:image/jpeg;base64,";
+        axios.get(`/bfr/mmr/student-image/${record.schoolcode}/${record.studentcode}`).then(res => {
+            const image = <img src={MIME + res.data} style={{"height": "40px", "width": "40px"}}/>;
+            const newRecord = Object.assign({}, record, {"image": image})
+
+            this.setState(prevState => ({
+                reportData: prevState.reportData.map(r => this.isSameCode(r, record) ? newRecord : r)
+            }))
         })
     }
+
 
     onHandleChange = selectedOption => {
         this.setState({loaded: false});
         Option(selectedOption).fold(
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
-                axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/gmreport/${selectedOption.value}`).then(res => {
+                axios.get(`/bfr/master/log/${selectedOption.value}`).then(res => {
                     this.setState({
                         selectedOption,
-                        reportData: res.data.data,
+                        reportData: res.data.data.map(this.addImageLink),
                         loaded: true
                     })
                 }).catch(err => {
@@ -86,7 +68,7 @@ class GMR extends Component {
         let selectedOption = this.state.selectedOption;
         const value = selectedOption && selectedOption.value;
         return (
-            <section className="wrapper state-overview">
+            <section class="wrapper state-overview">
                 <Loader loaded={this.state.loaded} top="50%" left="55%">
                     <Select
                         style={{width: "95%"}}
@@ -97,7 +79,7 @@ class GMR extends Component {
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
                         data={this.state.reportData}
-                        columns={reportTableColumns}
+                        columns={ReportTableSchema}
                         filterable
                         defaultPageSize={5}
                         className="-striped -highlight"
@@ -107,6 +89,15 @@ class GMR extends Component {
         )
     }
 
-}
+    componentDidMount = () => {
+        axios.get('/bfr/thr/dropdown').then(({data}) => {
+            this.setState({
+                options: data,
+                loaded: true
+            })
+        }).catch(err => {
+            this.setState({loaded: true})
+        })
+    }
 
-export default GMR;
+}

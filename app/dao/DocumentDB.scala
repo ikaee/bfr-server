@@ -7,7 +7,8 @@ import java.util.{Date, TimeZone}
 
 import com.microsoft.azure.documentdb.{Document, DocumentClient}
 import dao.DBConfigFactory._
-import model.{AMRData, HotCookedData, THRData}
+import model.{AMRData, HotCookedData, MMRData, THRData}
+import play.api.Logger
 import play.api.libs.json._
 
 import scala.collection.JavaConverters._
@@ -17,6 +18,7 @@ import scala.collection.JavaConverters._
   * Created by kirankumarbs on 4/6/17.
   */
 object DocumentDB {
+
   val simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy")
   simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"))
 
@@ -34,13 +36,13 @@ object DocumentDB {
       case Nil => Nil
       case xs => xs
     }
-    println("Master Data is ===>" + master)
+    Logger.info("Master Data is ===>" + master)
 
     val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"thr\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
-    println("Present Data is ===>" + present)
+    Logger.info("Present Data is ===>" + present)
 
     implicit def convert(o: Object): String = o.toString()
 
@@ -65,14 +67,14 @@ object DocumentDB {
       case Nil => Nil
       case xs => xs
     }
-    println("Master Data is ===>" + master)
+    Logger.info("Master Data is ===>" + master)
 
     val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"attendance\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
-    println("Present Data is ===>" + present)
-    println("currentDate ===>" + currentDate)
+    Logger.info("Present Data is ===>" + present)
+    Logger.info("currentDate ===>" + currentDate)
 
     implicit def convert(o: Object): String = o.toString()
 
@@ -96,13 +98,13 @@ object DocumentDB {
       case Nil => Nil
       case xs => xs
     }
-    println("Master Data is ===>" + master)
+    Logger.info("Master Data is ===>" + master)
 
     val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"hot-cooked\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
-    println("Present Data is ===>" + present)
+    Logger.info("Present Data is ===>" + present)
 
     implicit def convert(o: Object): String = o.toString()
 
@@ -117,6 +119,38 @@ object DocumentDB {
       case Nil => Nil
       case xs => xs.filter(_.isDefined).map(_.get)
     }
+
+  }
+
+  def getMMR: String => List[MMRData] = schoolCode => {
+    val currentDate: String = simpleDateFormat.format(new Date())
+
+    val master = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"registration\" and coll.schoolcode = \"" + schoolCode + "\"").toList match {
+      case Nil => Nil
+      case xs => xs
+    }
+    Logger.info("Master Data is ===>" + master)
+
+    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"master-login\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
+      case Nil => Nil
+      case xs => xs
+    }
+    Logger.info("Present Data is ===>" + present)
+
+    implicit def convert(o: Object): String = o.toString()
+
+
+    val mmrs = present.map(p => master.find(m => m.get("studentcode") == p.get("studentcode")) match {
+      case None => None
+      case Some(m) =>
+        Some(MMRData(m.get("schoolcode"), m.get("studentcode"), m.get("name"), m.get("surname"), m.get("gender"), m.get("dob"), s"${p.get("datestamp")}-${p.get("timestamp")}",p.get("lattitude"),p.get("longitude")))
+    })
+
+    mmrs match {
+      case Nil => Nil
+      case xs => xs.filter(_.isDefined).map(_.get)
+    }
+
 
   }
 
@@ -188,7 +222,7 @@ object DocumentDB {
       val start = LocalDate.of(dobParams(2).toInt, dobParams(1).toInt, dobParams(0).toInt)
       val end = LocalDate.now()
       val year = Math.abs(ChronoUnit.YEARS.between(start, end))
-      println("year == ", year)
+      Logger.info("year == "+year)
       year match {
         case y if (y >= 0 && y < 1) => "0-1"
         case y if (y > 1 && y < 3) => "1-3"

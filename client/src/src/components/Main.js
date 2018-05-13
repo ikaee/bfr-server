@@ -13,6 +13,7 @@ import Admin from "./Admin";
 import HotCooked from "./HotCooked";
 import moment from 'moment';
 import GMR from "./GMR";
+import MMR from "./MMR";
 import {PROJECT_NAME} from "../utils/Configuration";
 
 export default () =>
@@ -28,6 +29,7 @@ export default () =>
                 <Route path="/thr" component={THR}/>
                 <Route path="/hot-cooked" component={HotCooked}/>
                 <Route path="/gmr" component={GMR}/>
+                <Route path="/mmr" component={MMR}/>
                 <Route path="/admin" component={Admin}/>
             </section>
             {/*<Footer />*/}
