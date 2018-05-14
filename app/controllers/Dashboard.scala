@@ -14,8 +14,8 @@ class Dashboard extends Controller{
     case Right(r) => Ok(Json.toJson(r))
   }
 
-  def data(dashboardType:String) = Action {
-  response(BfrDashboardData(dashboardType=dashboardType))
+  def data(dashboardType:String, date: String) = Action {
+  response(BfrDashboardData(Some(Map("datestamp" -> date, "doctype" -> dashboardType))))
   }
 
 }

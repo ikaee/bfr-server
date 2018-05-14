@@ -30,15 +30,14 @@ object DocumentDB {
     imageData
   }
 
-  def getTHR(schoolCode: String) = {
-    val currentDate: String = simpleDateFormat.format(new Date())
+  def getTHR(schoolCode: String, date: String) = {
     val master = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"registration\" and coll.schoolcode = \"" + schoolCode + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
     Logger.info("Master Data is ===>" + master)
 
-    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"thr\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
+    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"thr\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + date + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
@@ -61,20 +60,19 @@ object DocumentDB {
   }
 
 
-  def getAMR(schoolCode: String) = {
-    val currentDate: String = simpleDateFormat.format(new Date())
+  def getAMR(schoolCode: String, date: String) = {
     val master = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"registration\" and coll.schoolcode = \"" + schoolCode + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
     Logger.info("Master Data is ===>" + master)
 
-    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"attendance\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
+    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"attendance\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + date + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
     Logger.info("Present Data is ===>" + present)
-    Logger.info("currentDate ===>" + currentDate)
+    Logger.info("currentDate ===>" + date)
 
     implicit def convert(o: Object): String = o.toString()
 
@@ -92,15 +90,14 @@ object DocumentDB {
 
   }
 
-  def getHotCooked(schoolCode: String) = {
-    val currentDate: String = simpleDateFormat.format(new Date())
+  def getHotCooked(schoolCode: String, date: String) = {
     val master = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"registration\" and coll.schoolcode = \"" + schoolCode + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
     Logger.info("Master Data is ===>" + master)
 
-    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"hot-cooked\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
+    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"hot-cooked\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + date + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
@@ -122,7 +119,7 @@ object DocumentDB {
 
   }
 
-  def getMMR: String => List[MMRData] = schoolCode => {
+  def getMMR: (String, String) => List[MMRData] = (schoolCode, date) => {
     val currentDate: String = simpleDateFormat.format(new Date())
 
     val master = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"registration\" and coll.schoolcode = \"" + schoolCode + "\"").toList match {
@@ -131,7 +128,7 @@ object DocumentDB {
     }
     Logger.info("Master Data is ===>" + master)
 
-    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"master-login\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + currentDate + "\"").toList match {
+    val present = queryDatabase(client, "SELECT * FROM coll where coll.doctype = \"master-login\" and coll.schoolcode = \"" + schoolCode + "\" and coll.datestamp = \"" + date + "\"").toList match {
       case Nil => Nil
       case xs => xs
     }
@@ -158,9 +155,9 @@ object DocumentDB {
 
   val client = DBConfigFactory.documentClient
 
-  def dashboardData(filters: Option[Map[String, String]],dashboardType:String): DashboardData = {
+  def dashboardData(filters: Option[Map[String, String]]): DashboardData = {
     val master: List[Document] = totalRegistrations
-    val present: List[Document] = totalPresented(dashboardType)
+    val present: List[Document] = totalPresented(filters)
     val attendanceWiseData: Map[String, String] = attendancData(master.length, present.length)
     val genderWiseData: Map[String, String] = genderData(master, present)
     val monthWiseData: Map[String, String] = monthData(present)
@@ -183,9 +180,10 @@ object DocumentDB {
 
   }
 
-  private def totalPresented(dashboardType:String) = {
+  private def totalPresented(filters: Option[Map[String, String]]) = {
     val currentDate: String = simpleDateFormat.format(new Date())
-    val query = "SELECT * FROM coll where coll.doctype = \""+dashboardType+"\" and coll.datestamp = \"" + currentDate + "\"";
+    val filterString = filters.fold("")(_.toList.map(fs => "coll."+fs._1+"=\""+fs._2+"\"").mkString(" and "))
+    val query = "SELECT * FROM coll where " + filterString;
     queryDatabase(client, query).toList match {
       case Nil => Nil
       case xs => xs

@@ -11,8 +11,8 @@ import play.api.mvc.{Action, Controller}
   */
 class AmrController extends Controller {
 
-  def getAMR(schoolCode: String) = Action {
-    Ok(Json.toJson(AMRData(schoolCode)))
+  def getAMR(schoolCode: String, date: String) = Action {
+    Ok(Json.toJson(AMRData(schoolCode, date)))
   }
 
   def getAMRDropDown() = Action {
@@ -37,6 +37,14 @@ class AmrController extends Controller {
         Json.obj("value" -> "27511150607", "label" -> "Vishnupuri-7"),
         Json.obj("value" -> "27511150608", "label" -> "Vishnupuri-8"),
         Json.obj("value" -> "27511150621", "label" -> "Vishnupuri-9"),
+        Json.obj("value" -> "27511150610", "label" -> "Markand-1"),
+        Json.obj("value" -> "27511150611", "label" -> "markand-2"),
+        Json.obj("value" -> "27511150621", "label" -> "Pimpalgaon ni-1"),
+        Json.obj("value" -> "27511150621", "label" -> "Pimpalgaon ni-2"),
+        Json.obj("value" -> "27511150621", "label" -> "Kalhal"),
+        Json.obj("value" -> "27511150621", "label" -> "Bhangi"),
+        Json.obj("value" -> "27511150621", "label" -> "Pangari"),
+        Json.obj("value" -> "27511150621", "label" -> "Dhangarwadi"),
         Json.obj("value" -> "27511150613", "label" -> "vahegaon")
       )
     )

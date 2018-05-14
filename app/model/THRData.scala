@@ -15,8 +15,8 @@ case class THRData(schoolCode: String,
                   )
 
 object THRData {
-  def apply(schoolCode: String): List[THRData] = {
-    DocumentDB.getTHR(schoolCode)
+  def apply(schoolCode: String, date: String): List[THRData] = {
+    DocumentDB.getTHR(schoolCode, date)
   }
 
   implicit val thrDataWriter: Writes[THRData] = new Writes[THRData] {

@@ -14,7 +14,7 @@ case class MMRData(schoolCode: String,
                    longitude: String)
 
 object MMRData{
-  def apply: String => List[MMRData] = DocumentDB.getMMR
+  def apply: (String, String) => List[MMRData] = DocumentDB.getMMR
 
   implicit val mmrDataWriter: Writes[MMRData] = new Writes[MMRData] {
     override def writes(a: MMRData) = Json.obj(

@@ -18,8 +18,8 @@ case class AMRData(schoolCode: String,
                    longitude: String)
 
 object AMRData {
-  def apply(schoolCode: String): List[AMRData] = {
-    DocumentDB.getAMR(schoolCode)
+  def apply(schoolCode: String, date: String): List[AMRData] = {
+    DocumentDB.getAMR(schoolCode, date)
   }
 
   implicit val amrDataWriter: Writes[AMRData] = new Writes[AMRData] {

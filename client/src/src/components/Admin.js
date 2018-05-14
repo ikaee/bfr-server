@@ -21,7 +21,8 @@ export default class Admin extends Component {
     }
 
     onHandleChange = selectedOption => this.setState({selectedOption})
-    onChange = data => this.setState({...data})
+
+
 
     componentDidMount = () => {
         axios.get('/amr/dropdown').then(({data}) => {

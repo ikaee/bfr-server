@@ -9,7 +9,8 @@ import {Option} from "../utils/Option";
 import Loader from "react-loader";
 import 'react-datepicker/dist/react-datepicker.css';
 import {ReportTableSchema} from "../schema/ReportTableSchema";
-
+import DatePicker from 'react-datepicker';
+import moment from "moment/moment";
 
 
 class AMR extends Component {
@@ -18,6 +19,7 @@ class AMR extends Component {
         super();
         this.state = {
             selectedOption: '',
+            selectedDate: moment(),
             options: [],
             reportData: [],
             loaded: false
@@ -55,7 +57,7 @@ class AMR extends Component {
         Option(selectedOption).fold(
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
-                axios.get(`/bfr/v1/amr/${selectedOption.value}`).then(res => {
+                axios.get(`/bfr/v1/amr/${selectedOption.value}/${this.state.selectedDate.format("DD-MM-YYYY")}`).then(res => {
                     this.setState({
                         selectedOption,
                         reportData: res.data.data.map(this.addImageLink),
@@ -67,6 +69,25 @@ class AMR extends Component {
 
             })
 
+    }
+
+    handleSelectedDate = date => {
+        Option(this.state.selectedOption)
+            .fold(
+                _ => this.setState({selectedDate: date}),
+                _ => {
+                    this.setState({loaded: false})
+                    axios.get(`/bfr/v1/amr/${this.state.selectedOption.value}/${date.format("DD-MM-YYYY")}`)
+                        .then(res => {
+                            this.setState({
+                                selectedDate: date,
+                                reportData: res.data.data.map(this.addImageLink),
+                                loaded:true
+                            })
+                        }).catch(err => {
+                        this.setState({loaded: true})
+                    })
+                })
     }
 
     render() {
@@ -82,6 +103,13 @@ class AMR extends Component {
                         onChange={this.onHandleChange}
                         options={options}
                     />
+                    <div>
+                        <DatePicker id="selectedDate" name="selectedDate" required
+                                    selected={this.state.selectedDate}
+                                    onChange={this.handleSelectedDate}
+                                    dateFormat="DD-MM-YYYY"
+                        />
+                    </div>
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
                         data={this.state.reportData}

@@ -8,6 +8,8 @@ import 'react-select/dist/react-select.css';
 import Loader from "react-loader";
 import axios from 'axios';
 import {Option} from "../utils/Option";
+import DatePicker from 'react-datepicker';
+import moment from "moment/moment";
 
 class Dashboard extends Component {
     constructor() {
@@ -15,13 +17,14 @@ class Dashboard extends Component {
         this.state = {
             data: {},
             loaded: true,
+            selectedDate: moment(),
             selectedOption: {value: 'attendance', label: 'Attendance'},
             options: [{value: 'attendance', label: 'Attendance'}, {value: "thr", label: "Take Home Ration"}, {value: 'hot-cooked', label: 'HotMeals'}, {value: "gmr", label: "Growth Monitoring Report"}]
         }
     }
 
     componentDidMount() {
-        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}`)
+        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}/${this.state.selectedDate}`)
             .then(({data}) => {
                 this.setState({
                     loaded:true,
@@ -56,7 +59,6 @@ class Dashboard extends Component {
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
                 axios.get(`/bfr/v1/dashboard/${selectedOption.value}`).then(res => {
-                    console.log("called got data",res.data);
                     this.setState({
                         selectedOption,
                         data: res.data,
@@ -81,6 +83,22 @@ class Dashboard extends Component {
 
     }
 
+    handleSelectedDate = date => {
+        this.setState({loaded: false})
+
+        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}/${date.format("DD-MM-YYYY")}`)
+            .then(({data}) => {
+                this.setState({
+                    selectedDate: date,
+                    data,
+                    loaded:true
+                })
+            })
+            .catch(err => {
+                this.setState({loaded: true})
+            })
+    }
+
     render() {
         const {options} = this.state;
         let selectedOption = this.state.selectedOption;
@@ -95,6 +113,13 @@ class Dashboard extends Component {
                         value={value}
                         onChange={this.onHandleChange}
                         options={options}
+                    />
+                </div>
+                <div>
+                    <DatePicker id="selectedDate" name="selectedDate" required
+                                selected={this.state.selectedDate}
+                                onChange={this.handleSelectedDate}
+                                dateFormat="DD-MM-YYYY"
                     />
                 </div>
                 <Loader loaded={this.state.loaded} top="50%" left="55%">

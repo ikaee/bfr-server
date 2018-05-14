@@ -14,8 +14,8 @@ case class HotCookedData(schoolCode: String,
                          longitude: String)
 
 object HotCookedData {
-  def apply(schoolCode: String): List[HotCookedData] = {
-    DocumentDB.getHotCooked(schoolCode)
+  def apply(schoolCode: String, date: String): List[HotCookedData] = {
+    DocumentDB.getHotCooked(schoolCode, date)
   }
 
   implicit val thrDataWriter: Writes[HotCookedData] = new Writes[HotCookedData] {

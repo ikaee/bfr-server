@@ -8,7 +8,8 @@ import "react-table/react-table.css";
 import {Option} from "../utils/Option"
 import Loader from "react-loader"
 import {ReportTableSchema} from "../schema/ReportTableSchema";
-
+import DatePicker from 'react-datepicker';
+import moment from "moment/moment";
 
 export default class THR extends Component {
 
@@ -16,6 +17,7 @@ export default class THR extends Component {
         super();
         this.state = {
             selectedOption: '',
+            selectedDate: moment(),
             options: [],
             reportData: [],
             loaded: false
@@ -49,7 +51,7 @@ export default class THR extends Component {
         Option(selectedOption).fold(
             _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
             _ => {
-                axios.get(`/bfr/thr/log/${selectedOption.value}`).then(res => {
+                axios.get(`/bfr/thr/log/${selectedOption.value}/${this.state.selectedDate.format("DD-MM-YYYY")}`).then(res => {
                     this.setState({
                         selectedOption,
                         reportData: res.data.data.map(this.addImageLink),
@@ -61,6 +63,25 @@ export default class THR extends Component {
 
             })
 
+    }
+
+    handleSelectedDate = date => {
+        Option(this.state.selectedOption)
+            .fold(
+                _ => this.setState({selectedDate: date}),
+                _ => {
+                    this.setState({loaded: false})
+                    axios.get(`/bfr/thr/log/${this.state.selectedOption.value}/${date.format("DD-MM-YYYY")}`)
+                        .then(res => {
+                            this.setState({
+                                selectedDate: date,
+                                reportData: res.data.data.map(this.addImageLink),
+                                loaded:true
+                            })
+                        }).catch(err => {
+                        this.setState({loaded: true})
+                    })
+                })
     }
 
     render() {
@@ -76,6 +97,13 @@ export default class THR extends Component {
                         onChange={this.onHandleChange}
                         options={options}
                     />
+                    <div>
+                        <DatePicker id="selectedDate" name="selectedDate" required
+                                    selected={this.state.selectedDate}
+                                    onChange={this.handleSelectedDate}
+                                    dateFormat="DD-MM-YYYY"
+                        />
+                    </div>
                     <ReactTable
                         style={{width: "95%", marginTop: "2%"}}
                         data={this.state.reportData}
@@ -90,7 +118,7 @@ export default class THR extends Component {
     }
 
     componentDidMount = () => {
-        axios.get('/bfr/thr/dropdown').then(({data}) => {
+        axios.get('/amr/dropdown').then(({data}) => {
             this.setState({
                 options: data,
                 loaded: true

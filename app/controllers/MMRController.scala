@@ -7,8 +7,8 @@ import play.api.mvc.{Action, Controller}
 
 class MMRController extends Controller {
 
-  def getMMR(schoolCode: String) = Action {
-    Ok(Json.toJson(MMRData(schoolCode)))
+  def getMMR(schoolCode: String, date: String) = Action {
+    Ok(Json.toJson(MMRData(schoolCode, date)))
   }
 
 
