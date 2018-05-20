@@ -37,6 +37,9 @@ export const reportTableColumns = [
     }, {
         Header: 'Height(cm)',
         accessor: 'height'
+    }, {
+        Header: 'BMI',
+        accessor: 'bmi'
     },{
         Header: 'WHO',
         accessor: 'whoGrades'
