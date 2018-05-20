@@ -92,7 +92,7 @@ object getAllMasterListLogData extends App{
 object getAllAMRData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"attendance\"",
+    "SELECT * FROM tyrion where tyrion.doctype=\"attendance\" and tyrion.datestamp=\"11-05-2018\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)

@@ -32,9 +32,12 @@ export const reportTableColumns = [
         Header: 'Log Date',
         accessor: 'logDates'
     }, {
-        Header: 'Weight',
+        Header: 'Weight(kg)',
         accessor: 'weights'
     }, {
+        Header: 'Height(cm)',
+        accessor: 'height'
+    },{
         Header: 'WHO',
         accessor: 'whoGrades'
     }]

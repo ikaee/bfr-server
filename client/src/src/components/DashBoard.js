@@ -16,49 +16,53 @@ class Dashboard extends Component {
         super();
         this.state = {
             data: {},
-            loaded: true,
+            loaded: false,
             selectedDate: moment(),
             selectedOption: {value: 'attendance', label: 'Attendance'},
-            options: [{value: 'attendance', label: 'Attendance'}, {value: "thr", label: "Take Home Ration"}, {value: 'hot-cooked', label: 'HotMeals'}, {value: "gmr", label: "Growth Monitoring Report"}]
+            options: [{value: 'attendance', label: 'Attendance'}, {
+                value: "thr",
+                label: "Take Home Ration"
+            }, {value: 'hot-cooked', label: 'HotMeals'}, {value: "gmr", label: "Growth Monitoring Report"}]
         }
     }
 
     componentDidMount() {
-        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}/${this.state.selectedDate}`)
+        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}/${this.state.selectedDate.format("DD-MM-YYYY")}`)
             .then(({data}) => {
                 this.setState({
-                    loaded:true,
+                    loaded: true,
                     data
                 })
             })
             .catch(err => {
-
+                this.setState({loaded: true, data: {}})
             })
     }
 
-    gmrDashboardData = selectedOption => {
+    gmrDashboardData = (selectedOption, date) => {
+        this.setState({loaded: false});
         Option(selectedOption).fold(
-            _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
+            _ => this.setState({selectedOption: '', data: {}, loaded: true}),
             _ => {
                 axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/dashboard/27`).then(res => {
-                    console.log("called got data",res.data);
                     this.setState({
                         selectedOption,
                         data: {"attendance_data": res.data["grade_data"], ...res.data},
                         loaded: true
                     })
                 }).catch(err => {
-                    this.setState({loaded: true})
+                    this.setState({loaded: true, data:{}})
                 })
 
             })
     }
 
     regularDashboardData = selectedOption => {
+        this.setState({loaded: false});
         Option(selectedOption).fold(
-            _ => this.setState({selectedOption: '', reportData: [], loaded: true}),
+            _ => this.setState({selectedOption: '', data: {}, loaded: true}),
             _ => {
-                axios.get(`/bfr/v1/dashboard/${selectedOption.value}`).then(res => {
+                axios.get(`/bfr/v1/dashboard/${selectedOption.value}/${this.state.selectedDate.format("DD-MM-YYYY")}`).then(res => {
                     this.setState({
                         selectedOption,
                         data: res.data,
@@ -76,7 +80,7 @@ class Dashboard extends Component {
         this.setState({
             selectedOption,
             loaded: true,
-            selectedDashboard:selectedOption.label
+            selectedDashboard: selectedOption.label
         });
 
         selectedOption.value === "gmr" ? this.gmrDashboardData(selectedOption) : this.regularDashboardData(selectedOption)
@@ -91,7 +95,7 @@ class Dashboard extends Component {
                 this.setState({
                     selectedDate: date,
                     data,
-                    loaded:true
+                    loaded: true
                 })
             })
             .catch(err => {
@@ -107,24 +111,24 @@ class Dashboard extends Component {
         return (
 
             <section className="wrapper">
-                <div>
-                    <Select
-                        style={{width: "95%"}}
-                        value={value}
-                        onChange={this.onHandleChange}
-                        options={options}
-                    />
-                </div>
-                <div>
-                    <DatePicker id="selectedDate" name="selectedDate" required
-                                selected={this.state.selectedDate}
-                                onChange={this.handleSelectedDate}
-                                dateFormat="DD-MM-YYYY"
-                    />
-                </div>
                 <Loader loaded={this.state.loaded} top="50%" left="55%">
-                    <div style={{height: '20px',  fontSize: '20px', paddingBottom: '30px'}}>
-                        <label > {this.state.selectedOption.label} Dashboard</label>
+                    <div>
+                        <Select
+                            style={{width: "95%"}}
+                            value={value}
+                            onChange={this.onHandleChange}
+                            options={options}
+                        />
+                    </div>
+                    <div>
+                        { this.state.selectedOption.value !== "gmr" ? <DatePicker id="selectedDate" name="selectedDate" required
+                                    selected={this.state.selectedDate}
+                                    onChange={this.handleSelectedDate}
+                                    dateFormat="DD-MM-YYYY"
+                        /> : <div></div>}
+                    </div>
+                    <div style={{height: '20px', fontSize: '20px', paddingBottom: '30px'}}>
+                        <label> {this.state.selectedOption.label} Dashboard</label>
                     </div>
                     <div>
                         <MetricsDashboard metricsType={this.state.selectedOption.value} metricsData={attendance_data}/>

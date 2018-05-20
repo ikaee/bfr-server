@@ -39,12 +39,13 @@ class AmrController extends Controller {
         Json.obj("value" -> "27511150621", "label" -> "Vishnupuri-9"),
         Json.obj("value" -> "27511150610", "label" -> "Markand-1"),
         Json.obj("value" -> "27511150611", "label" -> "markand-2"),
-        Json.obj("value" -> "27511150621", "label" -> "Pimpalgaon ni-1"),
-        Json.obj("value" -> "27511150621", "label" -> "Pimpalgaon ni-2"),
-        Json.obj("value" -> "27511150621", "label" -> "Kalhal"),
-        Json.obj("value" -> "27511150621", "label" -> "Bhangi"),
-        Json.obj("value" -> "27511150621", "label" -> "Pangari"),
-        Json.obj("value" -> "27511150621", "label" -> "Dhangarwadi"),
+        Json.obj("value" -> "27511150609", "label" -> "Pimpalgaon ni-1"),
+        Json.obj("value" -> "27511150619", "label" -> "Pimpalgaon ni-2"),
+        Json.obj("value" -> "27511150612", "label" -> "Kalhal"),
+        Json.obj("value" -> "27511150614", "label" -> "Bhangi"),
+        Json.obj("value" -> "27511150617", "label" -> "Khupasarwadi"),
+        Json.obj("value" -> "27511150618", "label" -> "Pangari"),
+        Json.obj("value" -> "27511150616", "label" -> "Dhangarwadi"),
         Json.obj("value" -> "27511150613", "label" -> "vahegaon")
       )
     )
