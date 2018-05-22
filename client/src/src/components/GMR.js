@@ -40,6 +40,12 @@ export const reportTableColumns = [
     }, {
         Header: 'BMI',
         accessor: 'bmi'
+    }, {
+        Header: 'Stunting',
+        accessor: 'stunting'
+    }, {
+        Header: 'Wasting',
+        accessor: 'wasting'
     },{
         Header: 'WHO',
         accessor: 'whoGrades'
