@@ -26,9 +26,6 @@ export const reportTableColumns = [
         Header: 'Dob',
         accessor: 'dob'
     }, {
-        Header: 'Class',
-        accessor: 'class'
-    }, {
         Header: 'Log Date',
         accessor: 'logDates'
     }, {
