@@ -12,8 +12,8 @@ class MMRController extends Controller {
   }
 
 
-  def studentImage(schoolCode: String, studentCode: String) = Action {
-    Ok(DocumentDB.studentImage(schoolCode, studentCode))
+  def studentImage(schoolCode: String, studentCode: String, date: String, time: String) = Action {
+    Ok(DocumentDB.studentImage(schoolCode, studentCode, date, time))
   }
 
   implicit val mmrWrite = new Writes[List[MMRData]] {

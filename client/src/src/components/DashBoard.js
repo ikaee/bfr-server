@@ -18,25 +18,35 @@ class Dashboard extends Component {
             data: {},
             loaded: false,
             selectedDate: moment(),
-            selectedOption: {value: 'attendance', label: 'Attendance'},
-            options: [{value: 'attendance', label: 'Attendance'}, {
-                value: "thr",
-                label: "Take Home Ration"
-            }, {value: 'hot-cooked', label: 'HotMeals'}, {value: "gmr", label: "Growth Monitoring Report"}]
+            selectedOption: {value: 'gmr', label: 'Growth Monitoring Report'},
+            options: [
+                {value: "gmr", label: "Growth Monitoring Report"},
+                {value: 'attendance', label: 'Attendance'},
+                {value: "thr", label: "Take Home Ration"},
+                {value: 'hot-cooked', label: 'Hot Cooked'}
+            ]
         }
     }
 
+    //gender_data
+
     componentDidMount() {
-        axios.get(`/bfr/v1/dashboard/${this.state.selectedOption.value}/${this.state.selectedDate.format("DD-MM-YYYY")}`)
-            .then(({data}) => {
+        axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/dashboard/27`)
+            .then(res => {
                 this.setState({
                     loaded: true,
-                    data
+                    data: {...res.data, "attendance_data": res.data["grade_data"], "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])}
                 })
             })
             .catch(err => {
                 this.setState({loaded: true, data: {}})
             })
+    }
+
+    convertGmrGenderDataIntoPercentage = data => {
+        const total = parseInt(data[0].value) + parseInt(data[1].value)
+        console.log(data.map(gender => ({"value": (parseInt(gender.value) / total) * 100, "color":gender.color})))
+        return data.map(gender => ({"value": Math.round((parseInt(gender.value) / total) * 100), "color":gender.color}))
     }
 
     gmrDashboardData = (selectedOption, date) => {
@@ -47,11 +57,11 @@ class Dashboard extends Component {
                 axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/dashboard/27`).then(res => {
                     this.setState({
                         selectedOption,
-                        data: {"attendance_data": res.data["grade_data"], ...res.data},
+                        data: { ...res.data, "attendance_data": res.data["grade_data"], "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])},
                         loaded: true
                     })
                 }).catch(err => {
-                    this.setState({loaded: true, data:{}})
+                    this.setState({loaded: true, data: {}})
                 })
 
             })
@@ -69,7 +79,7 @@ class Dashboard extends Component {
                         loaded: true
                     })
                 }).catch(err => {
-                    this.setState({loaded: true})
+                    this.setState({loaded: true, data: {}})
                 })
 
             })
@@ -121,20 +131,21 @@ class Dashboard extends Component {
                         />
                     </div>
                     <div>
-                        { this.state.selectedOption.value !== "gmr" ? <DatePicker id="selectedDate" name="selectedDate" required
-                                    selected={this.state.selectedDate}
-                                    onChange={this.handleSelectedDate}
-                                    dateFormat="DD-MM-YYYY"
-                        /> : <div></div>}
+                        {this.state.selectedOption.value !== "gmr" ?
+                            <DatePicker id="selectedDate" name="selectedDate" required
+                                        selected={this.state.selectedDate}
+                                        onChange={this.handleSelectedDate}
+                                        dateFormat="DD-MM-YYYY"
+                            /> : <div></div>}
                     </div>
                     <div style={{height: '20px', fontSize: '20px', paddingBottom: '30px'}}>
                         <label> {this.state.selectedOption.label} Dashboard</label>
                     </div>
                     <div>
                         <MetricsDashboard metricsType={this.state.selectedOption.value} metricsData={attendance_data}/>
-                        <MonthWise title='Month wise' data={month_data}/>
-                        <GenderWise title='Gender Wise' data={gender_data}/>
-                        <AgeWise title={"Age wise"} data={age_data}/>
+                        <MonthWise title='Total Malnourished Month Wise (MUW + SUW)' data={month_data}/>
+                        <GenderWise title='Total Malnourished Gender Wise (MUW + SUW)' data={gender_data}/>
+                        <AgeWise title={"Total Malnourished Age Wise (MUW + SUW)"} data={age_data}/>
                     </div>
                 </Loader>
             </section>

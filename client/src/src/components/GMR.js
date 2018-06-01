@@ -44,7 +44,7 @@ export const reportTableColumns = [
         Header: 'Wasting',
         accessor: 'wasting'
     },{
-        Header: 'WHO',
+        Header: 'Underweight',
         accessor: 'whoGrades'
     }]
 

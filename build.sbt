@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.8.0",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   "junit" % "junit" % "4.12",
-  "com.spotify" % "docker-client" % "3.5.13"
+  "com.spotify" % "docker-client" % "3.5.13",
+  "org.scalaz" %% "scalaz-core" % "7.3.0-M23"
 )
 
 dockerCommands := Seq()

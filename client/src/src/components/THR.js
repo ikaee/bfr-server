@@ -31,11 +31,14 @@ export default class THR extends Component {
         })
     };
 
-    isSameCode = (r, record) => r.studentcode === record.studentcode
+    isSameCode = (r, record) => (r.studentcode === record.studentcode && r.schoolcode === record.schoolcode && r.timestamp === record.timestamp)
 
     addImage = record => {
         const MIME = "data:image/jpeg;base64,";
-        axios.get(`/bfr/thr/student-image/${record.schoolcode}/${record.studentcode}`).then(res => {
+        const dateTimeArr = record.timestamp.split("-")
+        const date = `${dateTimeArr[0]}-${dateTimeArr[1]}-${dateTimeArr[2]}`
+        const time = dateTimeArr[3]
+        axios.get(`/bfr/thr/student-image/${record.schoolcode}/${record.studentcode}/${date}/${time}`).then(res => {
             const image = <img src={MIME + res.data} style={{"height": "40px", "width": "40px"}}/>;
             const newRecord = Object.assign({}, record, {"image": image})
 

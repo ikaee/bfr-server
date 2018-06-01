@@ -37,7 +37,7 @@ object removeAllHotCooked extends App{
 
   val documents = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"hot-cooked\" ",
+    "SELECT * FROM tyrion where tyrion.doctype in (\"hot-cooked\", \"attendance\",\"thr\")  and tyrion.schoolcode=\"27511150602\" and tyrion.studentcode=\"017\" and tyrion.datestamp = \"12-05-2018\" and tyrion.timestamp = \"11:10:03\"",
     null).getQueryIterable().asScala.toList
 
   println(documents)
@@ -65,7 +65,7 @@ object removeAllImage extends App{
 
   val documents = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where  tyrion.doctype=\"image\" ",
+    "SELECT * FROM tyrion where  tyrion.doctype=\"image\"  and tyrion.schoolcode=\"27511150602\" and tyrion.studentcode=\"017\" and tyrion.datestamp = \"12-05-2018\" and tyrion.timestamp = \"11:10:03\"",
     null).getQueryIterable().asScala.toList
 
   println(documents)
@@ -80,7 +80,7 @@ object removeAllImage extends App{
 object getAllRegistrationData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"registration\" and tyrion.schoolcode=\"27511150619\" and tyrion.studentcode=\"5000\"",
+    "SELECT * FROM tyrion where tyrion.doctype=\"registration\" and tyrion.schoolcode=\"27511150601\" and tyrion.studentcode=\"046\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)
@@ -174,7 +174,7 @@ object getAllTHRData extends App{
 object getAllHOTCookedData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"the\"",
+    "SELECT * FROM tyrion where tyrion.schoolcode=\"27511150601\" and tyrion.studentcode = \"025\" and tyrion.datestamp = \"11-05-2018\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)
@@ -190,7 +190,7 @@ object getAllMasterLoginData extends App{
 object getImageData extends App{
   val dashboard = documentClient.queryDocuments(
     "dbs/" + databaseId + "/colls/" + collectionId,
-    "SELECT * FROM tyrion where tyrion.doctype=\"image\" ",
+    "SELECT * FROM tyrion where tyrion.doctype=\"image\" and tyrion.schoolcode=\"27511150601\" and tyrion.studentcode=\"016\"",
     null).getQueryIterable().toList()
 
   println("master data ===>" + dashboard)

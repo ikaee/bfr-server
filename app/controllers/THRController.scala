@@ -12,8 +12,8 @@ class THRController extends Controller {
     Ok(Json.toJson(THRData(schoolCode, date)))
   }
 
-  def studentImage(schoolCode: String, studentCode: String) = Action {
-    Ok(DocumentDB.studentImage(schoolCode, studentCode))
+  def studentImage(schoolCode: String, studentCode: String, date: String, time: String) = Action {
+    Ok(DocumentDB.studentImage(schoolCode, studentCode, date, time))
   }
 
   implicit val thrWrite = new Writes[List[THRData]] {
