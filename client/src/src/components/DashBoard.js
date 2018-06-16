@@ -113,6 +113,10 @@ class Dashboard extends Component {
             })
     }
 
+    chartLabel = label =>
+        this.state.selectedOption.value !== "gmr" ?
+            `Total Present ${label}` : `Total Malnourished ${label} (MUW + SUW)`
+
     render() {
         const {options} = this.state;
         let selectedOption = this.state.selectedOption;
@@ -143,9 +147,9 @@ class Dashboard extends Component {
                     </div>
                     <div>
                         <MetricsDashboard metricsType={this.state.selectedOption.value} metricsData={attendance_data}/>
-                        <MonthWise title='Total Malnourished Month Wise (MUW + SUW)' data={month_data}/>
-                        <GenderWise title='Total Malnourished Gender Wise (MUW + SUW)' data={gender_data}/>
-                        <AgeWise title={"Total Malnourished Age Wise (MUW + SUW)"} data={age_data}/>
+                        <MonthWise title={this.chartLabel("Month Wise")} data={month_data}/>
+                        <GenderWise title={this.chartLabel("Gender Wise")} data={gender_data}/>
+                        <AgeWise title={this.chartLabel("Age Wise")} data={age_data}/>
                     </div>
                 </Loader>
             </section>
