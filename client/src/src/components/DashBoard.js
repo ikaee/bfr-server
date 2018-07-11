@@ -35,7 +35,11 @@ class Dashboard extends Component {
             .then(res => {
                 this.setState({
                     loaded: true,
-                    data: {...res.data, "attendance_data": res.data["grade_data"], "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])}
+                    data: {
+                        ...res.data,
+                        "attendance_data": res.data["grade_data"],
+                        "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])
+                    }
                 })
             })
             .catch(err => {
@@ -45,8 +49,11 @@ class Dashboard extends Component {
 
     convertGmrGenderDataIntoPercentage = data => {
         const total = parseInt(data[0].value) + parseInt(data[1].value)
-        console.log(data.map(gender => ({"value": (parseInt(gender.value) / total) * 100, "color":gender.color})))
-        return data.map(gender => ({"value": Math.round((parseInt(gender.value) / total) * 100), "color":gender.color}))
+        console.log(data.map(gender => ({"value": (parseInt(gender.value) / total) * 100, "color": gender.color})))
+        return data.map(gender => ({
+            "value": Math.round((parseInt(gender.value) / total) * 100),
+            "color": gender.color
+        }))
     }
 
     gmrDashboardData = (selectedOption, date) => {
@@ -57,7 +64,11 @@ class Dashboard extends Component {
                 axios.get(`http://epgmweb.centralindia.cloudapp.azure.com:8080/epgm/dashboard/27`).then(res => {
                     this.setState({
                         selectedOption,
-                        data: { ...res.data, "attendance_data": res.data["grade_data"], "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])},
+                        data: {
+                            ...res.data,
+                            "attendance_data": res.data["grade_data"],
+                            "gender_data": this.convertGmrGenderDataIntoPercentage(res.data["gender_data"])
+                        },
                         loaded: true
                     })
                 }).catch(err => {
@@ -114,8 +125,11 @@ class Dashboard extends Component {
     }
 
     chartLabel = label =>
-        this.state.selectedOption.value !== "gmr" ?
-            `Total Present ${label}` : `Total Malnourished ${label} (MUW + SUW)`
+        this.state.selectedOption.value == "gmr" ?
+            `Total Malnourished ${label} (MUW + SUW)` :
+            this.state.selectedOption.value == "attendance" ? `Total Present ${label}` :
+                this.state.selectedOption.value == "thr" ? `Total Package ${label}` :
+                    `Total Meals Distributed ${label}`
 
     render() {
         const {options} = this.state;
