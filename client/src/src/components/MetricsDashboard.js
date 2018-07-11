@@ -2,8 +2,7 @@ import React from 'react';
 import {MetricsSchema} from "../schema/MetricsSchema";
 
 const MetricsDashboard = ({metricsType, metricsData}) => {
-    const type = metricsType === "gmr" ? "gmr" : "normal"
-    const metrics = MetricsSchema[type](metricsData)
+    const metrics = MetricsSchema[metricsType](metricsData)
     return <div>
         <div className="row state-overview">
             {metrics.map(m =>

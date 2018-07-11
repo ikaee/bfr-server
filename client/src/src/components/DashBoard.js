@@ -128,7 +128,7 @@ class Dashboard extends Component {
         this.state.selectedOption.value == "gmr" ?
             `Total Malnourished ${label} (MUW + SUW)` :
             this.state.selectedOption.value == "attendance" ? `Total Present ${label}` :
-                this.state.selectedOption.value == "thr" ? `Total Package ${label}` :
+                this.state.selectedOption.value == "thr" ? `Total Packets Distributed ${label}` :
                     `Total Meals Distributed ${label}`
 
     render() {

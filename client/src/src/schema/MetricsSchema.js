@@ -25,12 +25,48 @@ export const MetricsSchema = {
             "Normal": extractValue(data, "normal")
         }
     ],
-    "normal": data => [
+    "attendance": data => [
         {
             "type":"fa-hand-pointer-o",
             "name":"Present",
             "color":"terques",
             "Present": extractValue(data, "present")
+        },{
+            "type":"fa-users",
+            "name":"Total",
+            "color":"red",
+            "Total": extractValue(data, "total")
+        },{
+            "type":"fa-percent",
+            "name":"Percentage",
+            "color":"yellow",
+            "Percentage": extractValue(data, "percentage")
+        }
+    ],
+    "thr": data => [
+        {
+            "type":"fa-hand-pointer-o",
+            "name":"Packets Distributed",
+            "color":"terques",
+            "Packets Distributed": extractValue(data, "present")
+        },{
+            "type":"fa-users",
+            "name":"Total",
+            "color":"red",
+            "Total": extractValue(data, "total")
+        },{
+            "type":"fa-percent",
+            "name":"Percentage",
+            "color":"yellow",
+            "Percentage": extractValue(data, "percentage")
+        }
+    ],
+    "hot-cooked": data => [
+        {
+            "type":"fa-hand-pointer-o",
+            "name":"Meals Distributed",
+            "color":"terques",
+            "Meals Distributed": extractValue(data, "present")
         },{
             "type":"fa-users",
             "name":"Total",
