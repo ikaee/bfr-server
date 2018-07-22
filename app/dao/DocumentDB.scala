@@ -7,7 +7,7 @@ import java.util.{Date, TimeZone}
 
 import com.microsoft.azure.documentdb.{Document, DocumentClient}
 import dao.DBConfigFactory._
-import model.{AMRData, HotCookedData, MMRData, THRData}
+import model._
 import play.api.Logger
 import play.api.libs.json._
 
@@ -18,6 +18,16 @@ import scala.collection.JavaConverters._
   * Created by kirankumarbs on 4/6/17.
   */
 object DocumentDB {
+  implicit def convert(o: Object): String = o.toString()
+
+  def regionData(doctype: String, prefixValue: Option[String]): List[Region] = {
+    val baseQuery = "SELECT * FROM coll where coll.doctype = \"" + doctype + "\""
+
+    val query = prefixValue.fold(baseQuery)(pv => baseQuery + "and STARTSWITH(coll.code, \"" + pv + "\")")
+
+    queryDatabase(client, query).toList.map(document => Region(document.get("name"), document.get("code")))
+  }
+
 
   val simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy")
   simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"))
@@ -43,9 +53,6 @@ object DocumentDB {
       case xs => xs
     }
     Logger.info("Present Data is ===>" + present)
-
-    implicit def convert(o: Object): String = o.toString()
-
 
     val thrs = present.map(p => master.find(m => m.get("studentcode") == p.get("studentcode")) match {
       case None => None

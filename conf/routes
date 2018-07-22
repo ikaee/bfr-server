@@ -32,3 +32,6 @@ GET         /bfr/mmr/student-image/:schoolcode/:studentcode/:date/:time         
 #Registration
 POST        /bfr/v1/registration                                          controllers.RegistrationController.submitRegistration
 # GET         /bfr/:schoolcode/                                      controllers.RegistrationController.listMetadata(schoolcode: String, timestamp: Option[String] ?= None )
+
+#Region Data
+GET        /bfr/region/:doctype                        controllers.RegionController.regionData(doctype: String, prefixValue: Option[String])
